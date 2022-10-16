@@ -22,7 +22,6 @@ contract Liquidator is IFlashLoanRecipient, Test {
     IVault private immutable vault;
     ITroveManager private immutable troveManager;
     IStabilityPool private immutable stabilityPool;
-    BalancerSwapper private immutable swapper;
     IGMXRouter private immutable gmxrouter;
     ICurve private immutable vst_frax;
 
@@ -47,10 +46,6 @@ contract Liquidator is IFlashLoanRecipient, Test {
         gmxrouter = gmxrouter_;
         vst_frax = vst_frax_;
         owner = msg.sender;
-        swapper = new BalancerSwapper(vault);
-        emit log_named_address("swapper:", address(swapper));
-        uint num = swapper.num();
-        emit log_uint(num);
     }
 
     function makeFlashLoan(
@@ -62,29 +57,27 @@ contract Liquidator is IFlashLoanRecipient, Test {
     }
 
     function receiveFlashLoan(
-        IERC20[] memory tokens,
+        IERC20[] memory, /*tokens*/
         uint256[] memory amounts,
         uint256[] memory feeAmounts,
         bytes memory userData
     ) external override {
         require(msg.sender == address(vault));
-        emit log("receiving flash loan");
         uint256 depositAmount = VST.balanceOf(address(this));
         VST.approve(address(stabilityPool), depositAmount);
-        emit log("provideToSP");
         stabilityPool.provideToSP(depositAmount);
         uint256 n = abi.decode(userData, (uint));
-        emit log("liquidateTroves");
         troveManager.liquidateTroves(address(0), n);
-        emit log("withdrawFromSP");
         stabilityPool.withdrawFromSP(type(uint).max);
         swapEthToVST();
         uint256 repayAmount = amounts[0] + feeAmounts[0];
         VST.transfer(address(vault), repayAmount);
-        emit log_named_uint("vst bal", VST.balanceOf(address(this)) / 10**18);
+        emit log_named_uint(
+            "Final pnl VST",
+            VST.balanceOf(address(this)) / 10**18
+        );
         VST.transfer(owner, VST.balanceOf(address(this)));
 
-        emit log_named_uint("eth bal", address(this).balance);
         if (address(this).balance > 0) {
             payable(owner).transfer(address(this).balance);
         }
@@ -149,16 +142,18 @@ contract Liquidator is IFlashLoanRecipient, Test {
     // 6. repay debt
     // 7. send rest of balance to owner
 
-    function liquidate(uint256 n) public {
+    function liquidate(uint256 n, uint flashloanAmount) public {
         // 1. Flash loan a lot of VST
         // How much should I borrow ?
-        emit log("Starting");
+        emit log_named_uint(
+            "Executing Liquidation with amount:",
+            flashloanAmount / 10**18
+        );
         IERC20[] memory tokens = new IERC20[](1);
         tokens[0] = VST;
         uint256[] memory amounts = new uint256[](1);
-        amounts[0] = 30000 * 1e18;
+        amounts[0] = flashloanAmount;
         bytes memory userData = abi.encode(n);
-        emit log("making flash loan");
         makeFlashLoan(tokens, amounts, userData);
     }
 

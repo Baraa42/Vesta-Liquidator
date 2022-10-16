@@ -14,7 +14,7 @@ contract LiquidatorTest is Test {
         arbitrumFork = vm.createFork(url, 25157013);
     }
 
-    function testDeploy() public {
+    function testLiquidate() public {
         vm.selectFork(arbitrumFork);
         IVault vault = IVault(0xBA12222222228d8Ba445958a75a0704d566BF2C8);
         ITroveManager troveManager = ITroveManager(
@@ -35,6 +35,6 @@ contract LiquidatorTest is Test {
             gmxrouter,
             vst_frax
         );
-        liquidator.liquidate(281474976710655);
+        liquidator.liquidate(281474976710655, 10000 * 1e18);
     }
 }

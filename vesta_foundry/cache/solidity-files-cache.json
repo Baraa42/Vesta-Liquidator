@@ -781,8 +781,8 @@
       }
     },
     "src/Liquidator.sol": {
-      "lastModificationDate": 1665945906846,
-      "contentHash": "d2dc88c0cdccae53940ff645ac24608e",
+      "lastModificationDate": 1665946489428,
+      "contentHash": "99b64f43d22c2a6c8d3d94cabee36968",
       "sourceName": "src/Liquidator.sol",
       "solcConfig": {
         "settings": {
@@ -883,8 +883,8 @@
       }
     },
     "test/Liquidator.t.sol": {
-      "lastModificationDate": 1665945497049,
-      "contentHash": "9657e704ed26d3d047616366aea9949b",
+      "lastModificationDate": 1665946528205,
+      "contentHash": "5b3ab18470af39584e452c58fe9df8df",
       "sourceName": "test/Liquidator.t.sol",
       "solcConfig": {
         "settings": {
