@@ -1,0 +1,952 @@
+{
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "enum IVault.SwapKind",
+          "name": "kind",
+          "type": "uint8"
+        },
+        {
+          "components": [
+            {
+              "internalType": "bytes32",
+              "name": "poolId",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "uint256",
+              "name": "assetInIndex",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "assetOutIndex",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bytes",
+              "name": "userData",
+              "type": "bytes"
+            }
+          ],
+          "internalType": "struct IVault.BatchSwapStep[]",
+          "name": "swaps",
+          "type": "tuple[]"
+        },
+        {
+          "internalType": "contract IAsset[]",
+          "name": "assets",
+          "type": "address[]"
+        },
+        {
+          "components": [
+            {
+              "internalType": "address",
+              "name": "sender",
+              "type": "address"
+            },
+            {
+              "internalType": "bool",
+              "name": "fromInternalBalance",
+              "type": "bool"
+            },
+            {
+              "internalType": "address payable",
+              "name": "recipient",
+              "type": "address"
+            },
+            {
+              "internalType": "bool",
+              "name": "toInternalBalance",
+              "type": "bool"
+            }
+          ],
+          "internalType": "struct IVault.FundManagement",
+          "name": "funds",
+          "type": "tuple"
+        },
+        {
+          "internalType": "int256[]",
+          "name": "limits",
+          "type": "int256[]"
+        },
+        {
+          "internalType": "uint256",
+          "name": "deadline",
+          "type": "uint256"
+        }
+      ],
+      "name": "batchSwap",
+      "outputs": [
+        {
+          "internalType": "int256[]",
+          "name": "",
+          "type": "int256[]"
+        }
+      ],
+      "stateMutability": "payable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "recipient",
+          "type": "address"
+        },
+        {
+          "internalType": "contract IERC20[]",
+          "name": "tokens",
+          "type": "address[]"
+        },
+        {
+          "internalType": "uint256[]",
+          "name": "amounts",
+          "type": "uint256[]"
+        },
+        {
+          "internalType": "bytes",
+          "name": "userData",
+          "type": "bytes"
+        }
+      ],
+      "name": "flashLoan",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "bytecode": {
+    "object": "0x",
+    "sourceMap": "",
+    "linkReferences": {}
+  },
+  "deployedBytecode": {
+    "object": "0x",
+    "sourceMap": "",
+    "linkReferences": {}
+  },
+  "methodIdentifiers": {
+    "batchSwap(uint8,(bytes32,uint256,uint256,uint256,bytes)[],address[],(address,bool,address,bool),int256[],uint256)": "945bcec9",
+    "flashLoan(address,address[],uint256[],bytes)": "5c38449e"
+  },
+  "ast": {
+    "absolutePath": "interfaces/IVault.sol",
+    "id": 403,
+    "exportedSymbols": {
+      "IAsset": [
+        3
+      ],
+      "IERC20": [
+        97
+      ],
+      "IVault": [
+        402
+      ]
+    },
+    "nodeType": "SourceUnit",
+    "src": "32:905:6",
+    "nodes": [
+      {
+        "id": 337,
+        "nodeType": "ImportDirective",
+        "src": "32:22:6",
+        "absolutePath": "interfaces/IERC20.sol",
+        "file": "./IERC20.sol",
+        "nameLocation": "-1:-1:-1",
+        "scope": 403,
+        "sourceUnit": 98,
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "id": 338,
+        "nodeType": "ImportDirective",
+        "src": "55:22:6",
+        "absolutePath": "interfaces/IAsset.sol",
+        "file": "./IAsset.sol",
+        "nameLocation": "-1:-1:-1",
+        "scope": 403,
+        "sourceUnit": 4,
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "id": 339,
+        "nodeType": "PragmaDirective",
+        "src": "78:23:6",
+        "literals": [
+          "solidity",
+          "^",
+          "0.8",
+          ".0"
+        ]
+      },
+      {
+        "id": 402,
+        "nodeType": "ContractDefinition",
+        "src": "103:833:6",
+        "nodes": [
+          {
+            "id": 342,
+            "nodeType": "EnumDefinition",
+            "src": "126:57:6",
+            "canonicalName": "IVault.SwapKind",
+            "members": [
+              {
+                "id": 340,
+                "name": "GIVEN_IN",
+                "nameLocation": "150:8:6",
+                "nodeType": "EnumValue",
+                "src": "150:8:6"
+              },
+              {
+                "id": 341,
+                "name": "GIVEN_OUT",
+                "nameLocation": "168:9:6",
+                "nodeType": "EnumValue",
+                "src": "168:9:6"
+              }
+            ],
+            "name": "SwapKind",
+            "nameLocation": "131:8:6"
+          },
+          {
+            "id": 353,
+            "nodeType": "StructDefinition",
+            "src": "188:161:6",
+            "canonicalName": "IVault.BatchSwapStep",
+            "members": [
+              {
+                "constant": false,
+                "id": 344,
+                "mutability": "mutable",
+                "name": "poolId",
+                "nameLocation": "227:6:6",
+                "nodeType": "VariableDeclaration",
+                "scope": 353,
+                "src": "219:14:6",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_bytes32",
+                  "typeString": "bytes32"
+                },
+                "typeName": {
+                  "id": 343,
+                  "name": "bytes32",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "219:7:6",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes32",
+                    "typeString": "bytes32"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 346,
+                "mutability": "mutable",
+                "name": "assetInIndex",
+                "nameLocation": "251:12:6",
+                "nodeType": "VariableDeclaration",
+                "scope": 353,
+                "src": "243:20:6",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 345,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "243:7:6",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 348,
+                "mutability": "mutable",
+                "name": "assetOutIndex",
+                "nameLocation": "281:13:6",
+                "nodeType": "VariableDeclaration",
+                "scope": 353,
+                "src": "273:21:6",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 347,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "273:7:6",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 350,
+                "mutability": "mutable",
+                "name": "amount",
+                "nameLocation": "312:6:6",
+                "nodeType": "VariableDeclaration",
+                "scope": 353,
+                "src": "304:14:6",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 349,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "304:7:6",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 352,
+                "mutability": "mutable",
+                "name": "userData",
+                "nameLocation": "334:8:6",
+                "nodeType": "VariableDeclaration",
+                "scope": 353,
+                "src": "328:14:6",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_bytes_storage_ptr",
+                  "typeString": "bytes"
+                },
+                "typeName": {
+                  "id": 351,
+                  "name": "bytes",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "328:5:6",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes_storage_ptr",
+                    "typeString": "bytes"
+                  }
+                },
+                "visibility": "internal"
+              }
+            ],
+            "name": "BatchSwapStep",
+            "nameLocation": "195:13:6",
+            "scope": 402,
+            "visibility": "public"
+          },
+          {
+            "id": 362,
+            "nodeType": "StructDefinition",
+            "src": "354:154:6",
+            "canonicalName": "IVault.FundManagement",
+            "members": [
+              {
+                "constant": false,
+                "id": 355,
+                "mutability": "mutable",
+                "name": "sender",
+                "nameLocation": "394:6:6",
+                "nodeType": "VariableDeclaration",
+                "scope": 362,
+                "src": "386:14:6",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_address",
+                  "typeString": "address"
+                },
+                "typeName": {
+                  "id": 354,
+                  "name": "address",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "386:7:6",
+                  "stateMutability": "nonpayable",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 357,
+                "mutability": "mutable",
+                "name": "fromInternalBalance",
+                "nameLocation": "415:19:6",
+                "nodeType": "VariableDeclaration",
+                "scope": 362,
+                "src": "410:24:6",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_bool",
+                  "typeString": "bool"
+                },
+                "typeName": {
+                  "id": 356,
+                  "name": "bool",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "410:4:6",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 359,
+                "mutability": "mutable",
+                "name": "recipient",
+                "nameLocation": "460:9:6",
+                "nodeType": "VariableDeclaration",
+                "scope": 362,
+                "src": "444:25:6",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_address_payable",
+                  "typeString": "address payable"
+                },
+                "typeName": {
+                  "id": 358,
+                  "name": "address",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "444:15:6",
+                  "stateMutability": "payable",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address_payable",
+                    "typeString": "address payable"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 361,
+                "mutability": "mutable",
+                "name": "toInternalBalance",
+                "nameLocation": "484:17:6",
+                "nodeType": "VariableDeclaration",
+                "scope": 362,
+                "src": "479:22:6",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_bool",
+                  "typeString": "bool"
+                },
+                "typeName": {
+                  "id": 360,
+                  "name": "bool",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "479:4:6",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
+                  }
+                },
+                "visibility": "internal"
+              }
+            ],
+            "name": "FundManagement",
+            "nameLocation": "361:14:6",
+            "scope": 402,
+            "visibility": "public"
+          },
+          {
+            "id": 376,
+            "nodeType": "FunctionDefinition",
+            "src": "514:158:6",
+            "functionSelector": "5c38449e",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "flashLoan",
+            "nameLocation": "523:9:6",
+            "parameters": {
+              "id": 374,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 364,
+                  "mutability": "mutable",
+                  "name": "recipient",
+                  "nameLocation": "550:9:6",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 376,
+                  "src": "542:17:6",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 363,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "542:7:6",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 368,
+                  "mutability": "mutable",
+                  "name": "tokens",
+                  "nameLocation": "585:6:6",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 376,
+                  "src": "569:22:6",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_array$_t_contract$_IERC20_$97_$dyn_memory_ptr",
+                    "typeString": "contract IERC20[]"
+                  },
+                  "typeName": {
+                    "baseType": {
+                      "id": 366,
+                      "nodeType": "UserDefinedTypeName",
+                      "pathNode": {
+                        "id": 365,
+                        "name": "IERC20",
+                        "nodeType": "IdentifierPath",
+                        "referencedDeclaration": 97,
+                        "src": "569:6:6"
+                      },
+                      "referencedDeclaration": 97,
+                      "src": "569:6:6",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_contract$_IERC20_$97",
+                        "typeString": "contract IERC20"
+                      }
+                    },
+                    "id": 367,
+                    "nodeType": "ArrayTypeName",
+                    "src": "569:8:6",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_array$_t_contract$_IERC20_$97_$dyn_storage_ptr",
+                      "typeString": "contract IERC20[]"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 371,
+                  "mutability": "mutable",
+                  "name": "amounts",
+                  "nameLocation": "618:7:6",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 376,
+                  "src": "601:24:6",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_array$_t_uint256_$dyn_memory_ptr",
+                    "typeString": "uint256[]"
+                  },
+                  "typeName": {
+                    "baseType": {
+                      "id": 369,
+                      "name": "uint256",
+                      "nodeType": "ElementaryTypeName",
+                      "src": "601:7:6",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "id": 370,
+                    "nodeType": "ArrayTypeName",
+                    "src": "601:9:6",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_array$_t_uint256_$dyn_storage_ptr",
+                      "typeString": "uint256[]"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 373,
+                  "mutability": "mutable",
+                  "name": "userData",
+                  "nameLocation": "648:8:6",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 376,
+                  "src": "635:21:6",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes_memory_ptr",
+                    "typeString": "bytes"
+                  },
+                  "typeName": {
+                    "id": 372,
+                    "name": "bytes",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "635:5:6",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes_storage_ptr",
+                      "typeString": "bytes"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "532:130:6"
+            },
+            "returnParameters": {
+              "id": 375,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "671:0:6"
+            },
+            "scope": 402,
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "id": 401,
+            "nodeType": "FunctionDefinition",
+            "src": "678:256:6",
+            "functionSelector": "945bcec9",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "batchSwap",
+            "nameLocation": "687:9:6",
+            "parameters": {
+              "id": 396,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 379,
+                  "mutability": "mutable",
+                  "name": "kind",
+                  "nameLocation": "715:4:6",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 401,
+                  "src": "706:13:6",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_enum$_SwapKind_$342",
+                    "typeString": "enum IVault.SwapKind"
+                  },
+                  "typeName": {
+                    "id": 378,
+                    "nodeType": "UserDefinedTypeName",
+                    "pathNode": {
+                      "id": 377,
+                      "name": "SwapKind",
+                      "nodeType": "IdentifierPath",
+                      "referencedDeclaration": 342,
+                      "src": "706:8:6"
+                    },
+                    "referencedDeclaration": 342,
+                    "src": "706:8:6",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_enum$_SwapKind_$342",
+                      "typeString": "enum IVault.SwapKind"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 383,
+                  "mutability": "mutable",
+                  "name": "swaps",
+                  "nameLocation": "752:5:6",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 401,
+                  "src": "729:28:6",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_array$_t_struct$_BatchSwapStep_$353_memory_ptr_$dyn_memory_ptr",
+                    "typeString": "struct IVault.BatchSwapStep[]"
+                  },
+                  "typeName": {
+                    "baseType": {
+                      "id": 381,
+                      "nodeType": "UserDefinedTypeName",
+                      "pathNode": {
+                        "id": 380,
+                        "name": "BatchSwapStep",
+                        "nodeType": "IdentifierPath",
+                        "referencedDeclaration": 353,
+                        "src": "729:13:6"
+                      },
+                      "referencedDeclaration": 353,
+                      "src": "729:13:6",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_struct$_BatchSwapStep_$353_storage_ptr",
+                        "typeString": "struct IVault.BatchSwapStep"
+                      }
+                    },
+                    "id": 382,
+                    "nodeType": "ArrayTypeName",
+                    "src": "729:15:6",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_array$_t_struct$_BatchSwapStep_$353_storage_$dyn_storage_ptr",
+                      "typeString": "struct IVault.BatchSwapStep[]"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 387,
+                  "mutability": "mutable",
+                  "name": "assets",
+                  "nameLocation": "783:6:6",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 401,
+                  "src": "767:22:6",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_array$_t_contract$_IAsset_$3_$dyn_memory_ptr",
+                    "typeString": "contract IAsset[]"
+                  },
+                  "typeName": {
+                    "baseType": {
+                      "id": 385,
+                      "nodeType": "UserDefinedTypeName",
+                      "pathNode": {
+                        "id": 384,
+                        "name": "IAsset",
+                        "nodeType": "IdentifierPath",
+                        "referencedDeclaration": 3,
+                        "src": "767:6:6"
+                      },
+                      "referencedDeclaration": 3,
+                      "src": "767:6:6",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_contract$_IAsset_$3",
+                        "typeString": "contract IAsset"
+                      }
+                    },
+                    "id": 386,
+                    "nodeType": "ArrayTypeName",
+                    "src": "767:8:6",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_array$_t_contract$_IAsset_$3_$dyn_storage_ptr",
+                      "typeString": "contract IAsset[]"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 390,
+                  "mutability": "mutable",
+                  "name": "funds",
+                  "nameLocation": "821:5:6",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 401,
+                  "src": "799:27:6",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_struct$_FundManagement_$362_memory_ptr",
+                    "typeString": "struct IVault.FundManagement"
+                  },
+                  "typeName": {
+                    "id": 389,
+                    "nodeType": "UserDefinedTypeName",
+                    "pathNode": {
+                      "id": 388,
+                      "name": "FundManagement",
+                      "nodeType": "IdentifierPath",
+                      "referencedDeclaration": 362,
+                      "src": "799:14:6"
+                    },
+                    "referencedDeclaration": 362,
+                    "src": "799:14:6",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_struct$_FundManagement_$362_storage_ptr",
+                      "typeString": "struct IVault.FundManagement"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 393,
+                  "mutability": "mutable",
+                  "name": "limits",
+                  "nameLocation": "852:6:6",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 401,
+                  "src": "836:22:6",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_array$_t_int256_$dyn_memory_ptr",
+                    "typeString": "int256[]"
+                  },
+                  "typeName": {
+                    "baseType": {
+                      "id": 391,
+                      "name": "int256",
+                      "nodeType": "ElementaryTypeName",
+                      "src": "836:6:6",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_int256",
+                        "typeString": "int256"
+                      }
+                    },
+                    "id": 392,
+                    "nodeType": "ArrayTypeName",
+                    "src": "836:8:6",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_array$_t_int256_$dyn_storage_ptr",
+                      "typeString": "int256[]"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 395,
+                  "mutability": "mutable",
+                  "name": "deadline",
+                  "nameLocation": "876:8:6",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 401,
+                  "src": "868:16:6",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 394,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "868:7:6",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "696:194:6"
+            },
+            "returnParameters": {
+              "id": 400,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 399,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 401,
+                  "src": "917:15:6",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_array$_t_int256_$dyn_memory_ptr",
+                    "typeString": "int256[]"
+                  },
+                  "typeName": {
+                    "baseType": {
+                      "id": 397,
+                      "name": "int256",
+                      "nodeType": "ElementaryTypeName",
+                      "src": "917:6:6",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_int256",
+                        "typeString": "int256"
+                      }
+                    },
+                    "id": 398,
+                    "nodeType": "ArrayTypeName",
+                    "src": "917:8:6",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_array$_t_int256_$dyn_storage_ptr",
+                      "typeString": "int256[]"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "916:17:6"
+            },
+            "scope": 402,
+            "stateMutability": "payable",
+            "virtual": false,
+            "visibility": "external"
+          }
+        ],
+        "abstract": false,
+        "baseContracts": [],
+        "canonicalName": "IVault",
+        "contractDependencies": [],
+        "contractKind": "interface",
+        "fullyImplemented": false,
+        "linearizedBaseContracts": [
+          402
+        ],
+        "name": "IVault",
+        "nameLocation": "113:6:6",
+        "scope": 403,
+        "usedErrors": []
+      }
+    ],
+    "license": "MIT"
+  },
+  "id": 6
+}

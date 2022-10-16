@@ -1,0 +1,164 @@
+{
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_asset",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_amount",
+          "type": "uint256"
+        }
+      ],
+      "name": "receivedERC20",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "bytecode": {
+    "object": "0x",
+    "sourceMap": "",
+    "linkReferences": {}
+  },
+  "deployedBytecode": {
+    "object": "0x",
+    "sourceMap": "",
+    "linkReferences": {}
+  },
+  "methodIdentifiers": {
+    "receivedERC20(address,uint256)": "eb16f004"
+  },
+  "ast": {
+    "absolutePath": "interfaces/IDeposit.sol",
+    "id": 14,
+    "exportedSymbols": {
+      "IDeposit": [
+        13
+      ]
+    },
+    "nodeType": "SourceUnit",
+    "src": "33:118:1",
+    "nodes": [
+      {
+        "id": 5,
+        "nodeType": "PragmaDirective",
+        "src": "33:23:1",
+        "literals": [
+          "solidity",
+          "^",
+          "0.8",
+          ".0"
+        ]
+      },
+      {
+        "id": 13,
+        "nodeType": "ContractDefinition",
+        "src": "58:92:1",
+        "nodes": [
+          {
+            "id": 12,
+            "nodeType": "FunctionDefinition",
+            "src": "83:65:1",
+            "functionSelector": "eb16f004",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "receivedERC20",
+            "nameLocation": "92:13:1",
+            "parameters": {
+              "id": 10,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 7,
+                  "mutability": "mutable",
+                  "name": "_asset",
+                  "nameLocation": "114:6:1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 12,
+                  "src": "106:14:1",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 6,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "106:7:1",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 9,
+                  "mutability": "mutable",
+                  "name": "_amount",
+                  "nameLocation": "130:7:1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 12,
+                  "src": "122:15:1",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 8,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "122:7:1",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "105:33:1"
+            },
+            "returnParameters": {
+              "id": 11,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "147:0:1"
+            },
+            "scope": 13,
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          }
+        ],
+        "abstract": false,
+        "baseContracts": [],
+        "canonicalName": "IDeposit",
+        "contractDependencies": [],
+        "contractKind": "interface",
+        "fullyImplemented": false,
+        "linearizedBaseContracts": [
+          13
+        ],
+        "name": "IDeposit",
+        "nameLocation": "68:8:1",
+        "scope": 14,
+        "usedErrors": []
+      }
+    ],
+    "license": "MIT"
+  },
+  "id": 1
+}

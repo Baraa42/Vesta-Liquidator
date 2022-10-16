@@ -1,0 +1,91 @@
+{
+  "abi": [],
+  "bytecode": {
+    "object": "0x",
+    "linkReferences": {}
+  },
+  "deployedBytecode": {
+    "object": "0x",
+    "linkReferences": {}
+  },
+  "ast": {
+    "absolutePath": "test/Liquidator.t.sol",
+    "id": 408,
+    "exportedSymbols": {
+      "IAsset": [
+        3
+      ],
+      "IDeposit": [
+        13
+      ],
+      "IERC20": [
+        97
+      ],
+      "IFlashLoanRecipient": [
+        117
+      ],
+      "IStabilityPool": [
+        318
+      ],
+      "ITroveManager": [
+        335
+      ],
+      "IVault": [
+        402
+      ]
+    },
+    "nodeType": "SourceUnit",
+    "src": "0:168:7",
+    "nodes": [
+      {
+        "id": 404,
+        "nodeType": "ImportDirective",
+        "src": "0:34:7",
+        "absolutePath": "interfaces/IVault.sol",
+        "file": "../interfaces/IVault.sol",
+        "nameLocation": "-1:-1:-1",
+        "scope": 408,
+        "sourceUnit": 403,
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "id": 405,
+        "nodeType": "ImportDirective",
+        "src": "35:47:7",
+        "absolutePath": "interfaces/IFlashLoanRecipient.sol",
+        "file": "../interfaces/IFlashLoanRecipient.sol",
+        "nameLocation": "-1:-1:-1",
+        "scope": 408,
+        "sourceUnit": 118,
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "id": 406,
+        "nodeType": "ImportDirective",
+        "src": "83:41:7",
+        "absolutePath": "interfaces/ITroveManager.sol",
+        "file": "../interfaces/ITroveManager.sol",
+        "nameLocation": "-1:-1:-1",
+        "scope": 408,
+        "sourceUnit": 336,
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "id": 407,
+        "nodeType": "ImportDirective",
+        "src": "125:42:7",
+        "absolutePath": "interfaces/IStabilityPool.sol",
+        "file": "../interfaces/IStabilityPool.sol",
+        "nameLocation": "-1:-1:-1",
+        "scope": 408,
+        "sourceUnit": 319,
+        "symbolAliases": [],
+        "unitAlias": ""
+      }
+    ]
+  },
+  "id": 7
+}

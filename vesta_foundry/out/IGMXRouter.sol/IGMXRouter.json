@@ -1,0 +1,206 @@
+{
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "address[]",
+          "name": "_path",
+          "type": "address[]"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_minOut",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "_receiver",
+          "type": "address"
+        }
+      ],
+      "name": "swapETHToTokens",
+      "outputs": [],
+      "stateMutability": "payable",
+      "type": "function"
+    }
+  ],
+  "bytecode": {
+    "object": "0x",
+    "sourceMap": "",
+    "linkReferences": {}
+  },
+  "deployedBytecode": {
+    "object": "0x",
+    "sourceMap": "",
+    "linkReferences": {}
+  },
+  "methodIdentifiers": {
+    "swapETHToTokens(address[],uint256,address)": "abe68eaa"
+  },
+  "ast": {
+    "absolutePath": "interfaces/IGMXRouter.sol",
+    "id": 147,
+    "exportedSymbols": {
+      "IGMXRouter": [
+        146
+      ]
+    },
+    "nodeType": "SourceUnit",
+    "src": "33:184:5",
+    "nodes": [
+      {
+        "id": 135,
+        "nodeType": "PragmaDirective",
+        "src": "33:23:5",
+        "literals": [
+          "solidity",
+          "^",
+          "0.8",
+          ".0"
+        ]
+      },
+      {
+        "id": 146,
+        "nodeType": "ContractDefinition",
+        "src": "58:158:5",
+        "nodes": [
+          {
+            "id": 145,
+            "nodeType": "FunctionDefinition",
+            "src": "85:129:5",
+            "functionSelector": "abe68eaa",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "swapETHToTokens",
+            "nameLocation": "94:15:5",
+            "parameters": {
+              "id": 143,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 138,
+                  "mutability": "mutable",
+                  "name": "_path",
+                  "nameLocation": "136:5:5",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 145,
+                  "src": "119:22:5",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_array$_t_address_$dyn_memory_ptr",
+                    "typeString": "address[]"
+                  },
+                  "typeName": {
+                    "baseType": {
+                      "id": 136,
+                      "name": "address",
+                      "nodeType": "ElementaryTypeName",
+                      "src": "119:7:5",
+                      "stateMutability": "nonpayable",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_address",
+                        "typeString": "address"
+                      }
+                    },
+                    "id": 137,
+                    "nodeType": "ArrayTypeName",
+                    "src": "119:9:5",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_array$_t_address_$dyn_storage_ptr",
+                      "typeString": "address[]"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 140,
+                  "mutability": "mutable",
+                  "name": "_minOut",
+                  "nameLocation": "156:7:5",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 145,
+                  "src": "151:12:5",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 139,
+                    "name": "uint",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "151:4:5",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 142,
+                  "mutability": "mutable",
+                  "name": "_receiver",
+                  "nameLocation": "181:9:5",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 145,
+                  "src": "173:17:5",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 141,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "173:7:5",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "109:87:5"
+            },
+            "returnParameters": {
+              "id": 144,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "213:0:5"
+            },
+            "scope": 146,
+            "stateMutability": "payable",
+            "virtual": false,
+            "visibility": "external"
+          }
+        ],
+        "abstract": false,
+        "baseContracts": [],
+        "canonicalName": "IGMXRouter",
+        "contractDependencies": [],
+        "contractKind": "interface",
+        "fullyImplemented": false,
+        "linearizedBaseContracts": [
+          146
+        ],
+        "name": "IGMXRouter",
+        "nameLocation": "68:10:5",
+        "scope": 147,
+        "usedErrors": []
+      }
+    ],
+    "license": "MIT"
+  },
+  "id": 5
+}
