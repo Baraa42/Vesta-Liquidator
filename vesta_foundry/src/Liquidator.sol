@@ -1,5 +1,13 @@
 // SPDX-License-Identifier: MIT
 
+// 1. Flash loan a lot of VST from balancer
+// 2. Deposit to stability Pool
+// 3. Liquidate borrower
+// 4. Withdraw from pool
+// 5. swap ETH for VST (GMX + Curve)
+// 6. repay debt
+// 7. send rest of balance to owner (VST + ETH)
+
 pragma solidity ^0.8.4;
 
 import "../interfaces/IVault.sol";
@@ -133,14 +141,6 @@ contract Liquidator is IFlashLoanRecipient, Test {
         FRAX.approve(address(vst_frax), frax_balance);
         vst_frax.exchange(1, 0, frax_balance, 0, address(this));
     }
-
-    // 1. Flash loan a lot of VST
-    // 2. Deposit to stability Pool
-    // 3. Liquidate borrower
-    // 4. Withdraw from pool
-    // 5. swap ETH for VST
-    // 6. repay debt
-    // 7. send rest of balance to owner
 
     function liquidate(uint256 n, uint flashloanAmount) public {
         // 1. Flash loan a lot of VST
