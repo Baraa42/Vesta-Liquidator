@@ -27,6 +27,10 @@ with open(os.path.join(path, "abis/optionmarket_abi.json"), "r") as jsonFile:
     optionmarket_abi = json.load(jsonFile)
     jsonFile.close()
 
+with open(os.path.join(path, "abis/optionmarket_wrapper_abi.json"), "r") as jsonFile:
+    optionmarket_wrapper_abi = json.load(jsonFile)
+    jsonFile.close()
+
 with open(os.path.join(path, "abis/multicall_abi.json"), "r") as jsonFile:
     multicall_abi = json.load(jsonFile)
     jsonFile.close()
@@ -62,8 +66,8 @@ class Lyra_Agent:
         self.private_key = os.getenv("PRIVATE_KEY")
         self.spot = config.get("spot", "ETH")
 
-        self.w3 = Web3(Web3.HTTPProvider(os.getenv("OPTIMISM_RPC_URL")))
-        self.w3.middleware_onion.inject(geth_poa_middleware, layer=0)
+        self.w3_op = Web3(Web3.HTTPProvider(os.getenv("OPTIMISM_RPC_URL")))
+        self.w3_op.middleware_onion.inject(geth_poa_middleware, layer=0)
         self.endpoint = "https://api.thegraph.com/subgraphs/name/lyra-finance/mainnet"
         self.boards_query = """
                             query Boards {
@@ -82,19 +86,22 @@ class Lyra_Agent:
                             """
 
         # contracts
-        self.multicall = self.w3.eth.contract(
+        self.multicall_op = self.w3_op.eth.contract(
             address=contract_addresses["optimism"]["multicall"]["address"], abi=multicall_abi
         )
-        self.quoter = self.w3.eth.contract(
+        self.quoter = self.w3_op.eth.contract(
             address=contract_addresses["optimism"]["lyra_quoter"]["address"], abi=quoter_abi
         )
-        self.greek_cache = self.w3.eth.contract(
+        self.greek_cache = self.w3_op.eth.contract(
             address=contract_addresses["optimism"]["greek_cache"]["address"], abi=greek_cache_abi
         )
-        self.optionmarket = self.w3.eth.contract(
+        self.optionmarket = self.w3_op.eth.contract(
             address=contract_addresses["optimism"][f"optionmarket_{self.spot.lower()}"]["address"], abi=optionmarket_abi
         )
-        self.price_feed = self.w3.eth.contract(
+        self.optionmarket_wrapper = self.w3_op.eth.contract(
+            address=contract_addresses["optimism"]["optionmarket_wrapper"]["address"], abi=optionmarket_wrapper_abi
+        )
+        self.price_feed = self.w3_op.eth.contract(
             address=contract_addresses["optimism"]["price_feed"]["address"], abi=price_feed_abi
         )
 
@@ -106,7 +113,7 @@ class Lyra_Agent:
             "short_call_option_type", 2
         )  # short call sETH = 2, short call sUSD = 3
         self.short_put_option_type = config.get("short_put_option_type", 4)
-        self.liquidation_margin = config.get("liquidation_margin", 1.2)
+        self.liquidation_margin = config.get("liquidation_margin", 1.25)
 
         # setting up board etc
         try:
@@ -128,7 +135,7 @@ class Lyra_Agent:
             for option_type in [0, 2]
         ]
         calls = [{"target": self.quoter.address, "callData": cd} for cd in calldatas]
-        rets = self.multicall.functions.aggregate(calls).call()
+        rets = self.multicall_op.functions.aggregate(calls).call()
         decoded_rets = [self.decode(x) for x in rets[1]]
         premiums = [x[0] / 1e18 for x in decoded_rets]
         mid = (sum(premiums)) / 2
@@ -169,7 +176,7 @@ class Lyra_Agent:
             raise ValueError("direction must be long or short")
 
         calls = self.get_calls(strike_id, amounts, option_type)
-        rets = self.multicall.functions.aggregate(calls).call()
+        rets = self.multicall_op.functions.aggregate(calls).call()
         susd_price = self.decode_susd_price(rets[1][0])
         decoded_rets = [self.decode(x) for x in rets[1][1:]]
         premiums = [susd_price * x[0] / 1e18 for x in decoded_rets]
@@ -184,7 +191,6 @@ class Lyra_Agent:
         amount = 10**18 * amount
         susd_calldata = self.price_feed.functions.latestRoundData()._encode_transaction_data()
         calldatas = []
-
         for instrument in instruments:
             option_type = "call" if instrument["instrument_name"].endswith("C") else "put"
             buy_option_type = 0 if option_type == "call" else 1
@@ -207,7 +213,7 @@ class Lyra_Agent:
         Return quotes for instruments by appending `buy_quote_lyra` and `sell_quote_lyra` to the instruments dict
         """
         calls = self.get_batch_calls(instruments, amount)
-        rets = self.multicall.functions.aggregate(calls).call()
+        rets = self.multicall_op.functions.aggregate(calls).call()
         susd_price = self.decode_susd_price(rets[1][0])
         decoded_rets = [self.decode(x) for x in rets[1][1:]]
         premiums = [susd_price * x[0] / 1e18 for x in decoded_rets]
@@ -265,7 +271,7 @@ class Lyra_Agent:
 
     def get_required_collaterals(self, instruments, index_price, amount=1):
         calls = self.get_collaterals_calls(instruments, index_price, amount)
-        rets = self.multicall.functions.aggregate(calls).call()
+        rets = self.multicall_op.functions.aggregate(calls).call()
         susd_price = self.decode_susd_price(rets[1][0])
         requiered_collaterals = [susd_price * int(x.hex(), 16) / 1e18 for x in rets[1][1:]]
         return requiered_collaterals
@@ -380,7 +386,40 @@ class Lyra_Agent:
         if request.status_code == 200:
             return request.json()
         else:
-            raise Exception("Query failed. return code is {}.      {}".format(request.status_code, query))
+            raise Exception("Query failed. return code is {}.     {}".format(request.status_code, query))
+
+    #########################
+    ######## Trading #######
+    #########################
+
+    def sell_call(self, instrument_name, order_size, required_collateral):
+        strike_id = self.get_strike_id_from_name(instrument_name)
+        amount = int(10**18 * order_size)
+        trade_params = {
+            "strikeId": strike_id,
+            "positionId": 0,
+            "iterations": self.iterations,
+            "optionType": 2,
+            "amount": amount,
+            "setCollateralTo": required_collateral,
+            "minTotalCost": 0,
+            "maxTotalCost": MAX_UINT,
+        }
+
+        w3 = self.w3_op
+        sell_tx = self.optionmarket.functions.openPostion(trade_params).buildTransaction(
+            {
+                "chainId": 10,  # arbitrum chain id
+                "gasPrice": w3.eth.gas_price,
+                "from": self.wallet,
+                "nonce": w3.eth.getTransactionCount(self.wallet),
+            }
+        )
+        signed_sell_tx = w3.eth.account.sign_transaction(sell_tx, private_key=self.private_key)
+        sell_tx_hash = w3.eth.send_raw_transaction(signed_sell_tx.rawTransaction)
+        print(f"transaction link: https://optimistic.etherscan.io/tx/{sell_tx_hash.hex()}")
+        tx_receipt = w3.eth.wait_for_transaction_receipt(sell_tx_hash)
+        return tx_receipt
 
     #########################
     ######## Utilities #######
@@ -398,7 +437,7 @@ class Lyra_Agent:
             for strike_id in strike_ids
         ]
         calls = [{"target": self.optionmarket.address, "callData": cd} for cd in calldatas]
-        rets = self.multicall.functions.aggregate(calls).call()
+        rets = self.multicall_op.functions.aggregate(calls).call()
         decoded_rets = [self.decode(x) for x in rets[1]]
         strikes = [int(x[0] / 1e18) for x in decoded_rets]
         return strikes
@@ -433,4 +472,12 @@ class Lyra_Agent:
         return option_board["expiry_timestamp"]
 
 
-config = {"wallet": "0x", "long_option_type": 0, "short_option_type": 2, "strike_id": 63}
+config = {"wallet": "0x"}
+agent = Lyra_Agent(config)
+
+instruments = [
+    {"instrument_name": "ETH-21OCT22-1300-C", "strike": 1300, "strike_id": 239, "strike_idx": 0},
+    {"instrument_name": "ETH-21OCT22-1350-C", "strike": 1350, "strike_id": 250, "strike_idx": 1},
+    {"instrument_name": "ETH-21OCT22-1450-C", "strike": 1450, "strike_id": 253, "strike_idx": 2},
+    {"instrument_name": "ETH-21OCT22-1600-C", "strike": 1600, "strike_id": 242, "strike_idx": 3},
+]

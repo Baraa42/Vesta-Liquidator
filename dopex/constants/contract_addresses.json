@@ -9,6 +9,9 @@
     "optionmarket_eth": {
       "address": "0x1d42a98848e022908069c2c545aE44Cc78509Bc8"
     },
+    "optionmarket_wrapper": {
+      "address": "0xCCE7819d65f348c64B7Beb205BA367b3fE33763B"
+    },
     "optionmarket_btc": {
       "address": "0xc7f1A22c30aE981E6A74a0267CE6cBBF27D8ecD5"
     },
@@ -36,6 +39,10 @@
     },
     "weth": {
       "address": "0x4200000000000000000000000000000000000006",
+      "decimals": 18
+    },
+    "seth": {
+      "address": "0xE405de8F52ba7559f9df3C368500B6E6ae6Cee49",
       "decimals": 18
     }
   },

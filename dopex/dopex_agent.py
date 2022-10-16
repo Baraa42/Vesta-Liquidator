@@ -25,8 +25,9 @@ with open(os.path.join(path, "abis/multicall_abi.json"), "r") as jsonFile:
     multicall_abi = json.load(jsonFile)
     jsonFile.close()
 
-with open(os.path.join(path, "abis/price_feed_abi.json"), "r") as jsonFile:
-    price_feed_abi = json.load(jsonFile)
+
+with open(os.path.join(path, "abis/erc20_abi.json"), "r") as jsonFile:
+    erc20_abi = json.load(jsonFile)
     jsonFile.close()
 
 
@@ -63,9 +64,7 @@ class Dopex_Agent:
         self.ethweekly = self.w3.eth.contract(
             address=contract_addresses["arbitrum"]["ethweekly"]["address"], abi=ethweekly_abi
         )
-        self.price_feed = self.w3.eth.contract(
-            address=contract_addresses["arbitrum"]["price_feed"]["address"], abi=price_feed_abi
-        )
+
         self.strikes = self.get_live_strikes()
 
     #########################
@@ -148,6 +147,9 @@ class Dopex_Agent:
         final_prices = [(price + fee) / 1e18 for (price, fee) in zip(prices, fees)]
         return final_prices
 
+    def get_eth_price(self):
+        return self.ethweekly.functions.getCollateralPrice().call() / 1e8
+
     #########################
     ######## Trading #######
     #########################
@@ -174,6 +176,22 @@ class Dopex_Agent:
     ######## Utilities #######
     #########################
 
+    def get_token_balance(self, token, network="arbitrum"):
+        network = network.lower()
+        w3 = Web3(Web3.HTTPProvider(os.getenv(f"{network.upper()}_RPC_URL")))
+        w3.middleware_onion.inject(geth_poa_middleware, layer=0)
+        token_address = contract_addresses[network][token]["address"]
+        token_contract = w3.eth.contract(address=token_address, abi=erc20_abi)
+        decimals = contract_addresses[network][token]["decimals"]
+        try:
+            balance = token_contract.functions.balanceOf(self.wallet).call()
+        except:
+            try:
+                balance = token_contract.functions.balanceOf(self.wallet).call()
+            except:
+                raise Exception(f"Failed to get {token} balance twice on {network}")
+        return balance / 10**decimals
+
     def get_live_strikes(self):
         """'
         Get live boards from dopex
@@ -181,7 +199,7 @@ class Dopex_Agent:
         current_epoch = self.ethweekly.functions.currentEpoch().call()
         epoch_data = self.ethweekly.functions.getEpochData(current_epoch).call()
         strikes = epoch_data[7]
-        strikes = [strike / 10**8 for strike in strikes]
+        strikes = [int(strike / 10**8) for strike in strikes]
         self.strike_to_idx = {}
         for i in range(len(strikes)):
             self.strike_to_idx[strikes[i]] = i
@@ -212,3 +230,10 @@ class Dopex_Agent:
         month = month_to_int[date[-5:-2]]
         day = int(date[:-5])
         return int(datetime(year, month, day).timestamp())
+
+
+config = {"wallet": "0x"}
+# agent = Dopex_Agent(config)
+# print(agent.get_call_quotes(1300, 1666339200, [10, 20]))
+# print(agent.strikes)
+# print(agent.strike_to_idx)

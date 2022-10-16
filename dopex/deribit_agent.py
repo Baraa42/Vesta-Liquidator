@@ -284,3 +284,11 @@ class Deribit_Agent:
             "client_secret": self.client_secret,
         }
         return self._get_msg(method, params)
+
+
+config = {
+    "is_test": False,
+    "index": "eth_usd",
+}
+# agent = Deribit_Agent(config)
+# print(agent.get_account_summary("ETH", False))
